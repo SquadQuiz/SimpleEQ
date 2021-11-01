@@ -11,19 +11,25 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+
+//==============================================================================
 struct LookAndFeel : juce::LookAndFeel_V4
 {
-    //LookAndFeel();
-    //~LookAndFeel();
+   
+    //==============================================================================
 
-    void drawRotarySlider (juce::Graphics&,
+    void drawRotarySlider(juce::Graphics& g,
         int x, int y, int width, int height,
         float sliderPosProportional,
         float rotaryStartAngle,
         float rotaryEndAngle,
-        juce::Slider&) override { }
+        juce::Slider&) override;
+
+    //==============================================================================
+
 };
 
+//==============================================================================
 struct RotarySliderWithLabels : juce::Slider
 {
     RotarySliderWithLabels(juce::RangedAudioParameter& rap, const juce::String& unitSuffix) :
@@ -39,12 +45,14 @@ struct RotarySliderWithLabels : juce::Slider
     {
         setLookAndFeel(nullptr);
     }
+    //==============================================================================
 
-    void paint(juce::Graphics& g) override { }
+    void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 14; }
     juce::String getDisplayString() const;
 
+    //==============================================================================
 private:
     LookAndFeel  lnf;
 
@@ -52,12 +60,15 @@ private:
     juce::String suffix;
 };
 
+//==============================================================================
 struct ResponseCurveComponent : juce::Component,
                                 juce::AudioProcessorParameter::Listener,
                                 juce::Timer
 {
     ResponseCurveComponent(SimpleEQAudioProcessor&);
     ~ResponseCurveComponent();
+
+    //==============================================================================
 
     void parameterValueChanged(int parameterIndex, float newValue) override;
 
@@ -66,6 +77,8 @@ struct ResponseCurveComponent : juce::Component,
     void timerCallback() override;
 
     void paint(juce::Graphics& g) override;
+
+    //==============================================================================
 private:
     SimpleEQAudioProcessor& audioProcessor;
     juce::Atomic<bool> parameterChanged{ false };
@@ -74,7 +87,6 @@ private:
 };
 
 //==============================================================================
-
 class SimpleEQAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
@@ -82,9 +94,11 @@ public:
     ~SimpleEQAudioProcessorEditor() override;
 
     //==============================================================================
+
     void paint (juce::Graphics&) override;
     void resized() override;
    
+    //==============================================================================
 private:
     
     SimpleEQAudioProcessor& audioProcessor;
@@ -112,5 +126,6 @@ private:
 
     std::vector<juce::Component*> getComps();
 
+    //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessorEditor)
 };

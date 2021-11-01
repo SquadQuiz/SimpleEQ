@@ -182,9 +182,9 @@ bool SimpleEQAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* SimpleEQAudioProcessor::createEditor()
 {
     //use plugin editor gui    
-    return new SimpleEQAudioProcessorEditor (*this);
-    //use simple gui
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new SimpleEQAudioProcessorEditor(*this);
+    /*use simple gui
+    return new juce::GenericAudioProcessorEditor(*this);*/
 }
 
 //==============================================================================

@@ -87,12 +87,15 @@ struct ResponseCurveComponent : juce::Component,
 
     void paint(juce::Graphics& g) override;
 
+  
     //==============================================================================
 private:
     SimpleEQAudioProcessor& audioProcessor;
     juce::Atomic<bool> parameterChanged{ false };
-
+   
     MonoChain monoChain;
+    
+    void updateChain();
 };
 
 //==============================================================================

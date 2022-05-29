@@ -87,8 +87,9 @@ void LookAndFeel::drawToggleButton(juce::Graphics& g,
 
         auto bounds = toggleButton.getLocalBounds();
 
-        g.setColour(Colours::red);
-        g.drawRect(bounds);
+        // click box off power button
+        //g.setColour(Colours::red);
+        //g.drawRect(bounds);
         auto size = jmin(bounds.getWidth(), bounds.getHeight()) - 6;
         auto r = bounds.withSizeKeepingCentre(size, size).toFloat();
 

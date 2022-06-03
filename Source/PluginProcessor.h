@@ -21,10 +21,10 @@ struct Fifo
         for (auto& buffer : buffers)
         {
             buffer.setSize(numChannels,
-                numSamples,
-                false,   //clear everything?
-                true,    //including the extra space?
-                true);   //avoid reallocating if you can?
+                            numSamples,
+                            false,   //clear everything?
+                            true,    //including the extra space?
+                            true);   //avoid reallocating if you can?
             buffer.clear();
         }
     }
@@ -161,7 +161,7 @@ struct ChainSettings
 
     Slope lowCutSlope{ Slope::Slope_12 }, highCutSlope{ Slope::Slope_12 };
 
-    bool lowCutBypassed{ false }, peakByPasssed{ false }, highCutBypassed{ false };
+    bool lowCutBypassed{ false }, peakBypassed{ false }, highCutBypassed{ false };
 };
 
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
@@ -170,7 +170,6 @@ using Filter = juce::dsp::IIR::Filter<float>;
 
 using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
 
-// Mono Chain: LowCut -> Parametric -> HighCut
 using MonoChain = juce::dsp::ProcessorChain<CutFilter, Filter, CutFilter>;
 
 enum ChainPositions
@@ -194,8 +193,8 @@ void update(ChainType& chain, const CoefficientType& coefficients)
 
 template<typename ChainType, typename CoefficientType>
 void updateCutFilter(ChainType& chain,
-    const CoefficientType& coefficients,
-    const Slope& slope)
+                    const CoefficientType& coefficients,
+                    const Slope& slope)
 {
     chain.template setBypassed<0>(true);
     chain.template setBypassed<1>(true);
@@ -235,7 +234,7 @@ inline auto makeHighCutFilter(const ChainSettings& chainSettings, double sampleR
 {
     return juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(chainSettings.highCutFreq,
                                                                                         sampleRate,
-                                                                                        2 * (chainSettings.lowCutSlope + 1));
+                                                                                        2 * (chainSettings.highCutSlope + 1));
 }
 
 //==============================================================================
@@ -286,7 +285,7 @@ public:
 
     using BlockType = juce::AudioBuffer<float>;
     SingleChannelSampleFifo<BlockType> leftChannelFifo{ Channel::Left };
-    SingleChannelSampleFifo<BlockType> RightChannelFifo{ Channel::Right };
+    SingleChannelSampleFifo<BlockType> rightChannelFifo{ Channel::Right };
 
 private:
 
